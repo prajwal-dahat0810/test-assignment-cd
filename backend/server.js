@@ -1,21 +1,17 @@
 const express = require("express");
-require("dotenv").config();
 const cors = require("cors");
+
 const app = express();
-const allowedOrigins = [
-  "http://localhost:4200",
-  "http://localhost",
-  "http://localhost:3000",
-];
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
+require("dotenv").config();
+
 // parse requests of content-type - application/json
 app.use(express.json());
-
+app.use(
+  cors({
+    origin: ["http://localhost:4200", process.env.FRONTEND],
+    credentials: true,
+  }),
+);
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
@@ -43,8 +39,5 @@ require("./app/routes/turorial.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(process.env.FRONTEND_URL);
-  console.log(process.env.DATABASE_URL);
-  console.log(process.env.PORT);
   console.log(`Server is running on port ${PORT}.`);
 });
